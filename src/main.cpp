@@ -7,6 +7,7 @@
 #include "camera.hpp"
 #include "state.hpp"
 #include "ui_root.hpp"
+#include "properties.hpp"
 
 int main()
 {
@@ -39,7 +40,8 @@ int main()
     //
     Camera camera{window};
     State state{};
-    UiRoot uiRoot{state, window};
+    Properties properties;
+    UiRoot uiRoot{state, window, properties};
 
     GLuint skyVAO;
     glGenVertexArrays(1, &skyVAO);
@@ -64,6 +66,7 @@ int main()
 
         glUseProgram(skyProgram);
         camera.apply(skyProgram);
+        properties.apply(skyProgram);
 
         glUniform2f(
             glGetUniformLocation(skyProgram, "uResolution"),

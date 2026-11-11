@@ -1,6 +1,10 @@
 #include "ui_root.hpp"
 
-UiRoot::UiRoot(State &state, GLFWwindow *window) : state(&state)
+UiRoot::UiRoot(
+    State &state,
+    GLFWwindow *window,
+    Properties &properties
+) : state(&state), properties(&properties)
 {
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -8,7 +12,8 @@ UiRoot::UiRoot(State &state, GLFWwindow *window) : state(&state)
     ImGuiIO& io = ImGui::GetIO();
     (void)io;
 
-    ImGui::StyleColorsDark();
+    //ImGui::StyleColorsDark();
+    ImGui::StyleColorsLight();
 
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init("#version 330");
@@ -27,6 +32,7 @@ void UiRoot::build()
         break;
 
     case (StateType::InGame):
+        inGameScreen.build();
         break;
     
     default:

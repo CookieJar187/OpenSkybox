@@ -17,7 +17,7 @@ void Camera::update()
             float deltaY = static_cast<float>(mouseY - previousMouseY);
 
             yaw += deltaX * sensitivity;
-            pitch -= deltaY * sensitivity;
+            pitch += deltaY * sensitivity;
 
             pitch = std::clamp(pitch, -89.0f, 89.0f);
         }

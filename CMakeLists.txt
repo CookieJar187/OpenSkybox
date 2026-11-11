@@ -19,9 +19,10 @@ add_executable(program
 target_include_directories(program PRIVATE
     src/core/shader_loader
     src/core/camera
-    src/state
+    src/core/state
     src/ui
     src/ui/screens
+    src/core/properties
 )
 
 target_link_libraries(program PRIVATE
