@@ -5,9 +5,39 @@ out vec4 FragColor;
 uniform vec2 uResolution;
 uniform vec2 uCameraAngles;
 
-uniform vec3 zenithColor = vec3(0.05, 0.25, 0.65);
-uniform vec3 horizonColor = vec3(0.65, 0.80, 0.95);
-uniform vec3 nadirColor = vec3(0.25, 0.35, 0.45);
+uniform int atmosphereMode;
+
+uniform vec3 solidColor;
+uniform vec3 zenithColor;
+uniform vec3 horizonColor;
+uniform vec3 nadirColor;
+
+// Two-color gradient
+uniform float transitionPosition;
+uniform float transitionWidth;
+
+// Three-color gradient
+uniform float upperTransitionPosition;
+uniform float upperTransitionWidth;
+uniform float lowerTransitionPosition;
+uniform float lowerTransitionWidth;
+
+uniform bool sunEnabled;
+uniform vec3 sunColor;
+uniform float sunAzimuth;
+uniform float sunElevation;
+uniform float sunIntensity;
+uniform float sunGlare;
+uniform float sunSize;
+
+vec3 getSunDirection(float azimuth, float elevation)
+{
+    return normalize(vec3(
+        cos(elevation) * sin(azimuth),
+        sin(elevation),
+        -cos(elevation) * cos(azimuth)
+    ));
+}
 
 void main()
 {
@@ -37,20 +67,74 @@ void main()
     direction = yawRotation * pitchRotation * direction;
 
     // gradient
-    //vec3 zenithColor = vec3(0.05, 0.25, 0.65);
-    //vec3 horizonColor = vec3(0.65, 0.80, 0.95);
-    //vec3 nadirColor = vec3(0.25, 0.35, 0.45);
-
     vec3 color;
 
-    if (direction.y >= 0.0)
+    if (atmosphereMode == 0)
     {
-        color = mix(horizonColor, zenithColor, direction.y);
+        // Solid Color
+        color = solidColor;
     }
-    else
+    else if (atmosphereMode == 1)
     {
-        color = mix(horizonColor, nadirColor, -direction.y);
+        // Two-Color Gradient
+        float blend = smoothstep(
+            transitionPosition - transitionWidth * 0.5,
+            transitionPosition + transitionWidth * 0.5,
+            direction.y
+        );
+
+        color = mix(nadirColor, zenithColor, blend);
+    }
+    else if (atmosphereMode == 2)
+    {
+        // Three-Color Gradient
+        float lowerBlend = smoothstep(
+            lowerTransitionPosition - lowerTransitionWidth * 0.5,
+            lowerTransitionPosition + lowerTransitionWidth * 0.5,
+            direction.y
+        );
+
+        float upperBlend = smoothstep(
+            upperTransitionPosition - upperTransitionWidth * 0.5,
+            upperTransitionPosition + upperTransitionWidth * 0.5,
+            direction.y
+        );
+
+        vec3 lowerColor = mix(nadirColor, horizonColor, lowerBlend);
+
+        color = mix(lowerColor, zenithColor, upperBlend);
     }
 
+    // sun
+    if (sunEnabled)
+    {
+        vec3 sunDirection = getSunDirection(sunAzimuth, sunElevation);
+
+        float cosAngle = dot(direction, sunDirection);
+
+        // Sun radius in radians
+        float radius = radians(sunSize);
+
+        float disk = smoothstep(
+            cos(radius + radians(0.1)),
+            cos(radius),
+            cosAngle
+        );
+
+        color += sunColor * disk * sunIntensity;
+
+        // Sun glare
+        float glareRadius = radius * 5.0;
+
+        float glow = 1.0 - smoothstep(
+            radius,
+            glareRadius,
+            acos(clamp(cosAngle, -1.0, 1.0))
+        );
+
+        color += sunColor * glow * sunIntensity * sunGlare;
+    }
+
+    // fianlly apply color
     FragColor = vec4(color, 1.0);
 }

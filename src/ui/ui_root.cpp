@@ -12,7 +12,8 @@ UiRoot::UiRoot(
     ImGuiIO& io = ImGui::GetIO();
     (void)io;
 
-    //ImGui::StyleColorsDark();
+    io.Fonts->AddFontFromFileTTF("src/assets/Roboto-Regular.ttf", 14.0f);
+
     ImGui::StyleColorsLight();
 
     ImGui_ImplGlfw_InitForOpenGL(window, true);
