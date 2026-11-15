@@ -1,11 +1,11 @@
 #include "screens.hpp"
 
-MainMenuScreen::MainMenuScreen(State *state) : state(state) 
+Screen::MainMenuScreen::MainMenuScreen(State *state) : state(state) 
 {
 
 }
 
-void MainMenuScreen::build()
+void Screen::MainMenuScreen::build()
 {
     ImGui::Begin("OpenSkybox");
 

@@ -12,11 +12,15 @@ private:
     State *state;
     Properties *properties;
 
-    MainMenuScreen mainMenuScreen{state};
-    EditorScreen editorScreen{state, properties};
+    Screen::MainMenuScreen mainMenuScreen{state};
+    Screen::EditorScreen editorScreen{state, properties};
     
 public:
-    UiRoot(State &state, GLFWwindow *window, Properties &properties);
+    UiRoot(
+        State &state,
+        GLFWwindow *window,
+        Properties &properties
+    );
 
     void build();
     void draw();

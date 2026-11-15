@@ -18,6 +18,11 @@ add_executable(program
     src/ui/ui_root.cpp
     src/ui/screens/main_menu_screen.cpp
     src/ui/screens/editor_screen.cpp
+    src/ui/screens/editor_elements/file_menu_bar_ui.cpp
+    src/ui/screens/editor_elements/properties_ui.cpp
+    src/ui/screens/editor_elements/properties_ui_elements/atmosphere_ui.cpp
+    src/ui/screens/editor_elements/properties_ui_elements/sun_ui.cpp
+    src/ui/screens/editor_elements/properties_ui_elements/clouds_ui.cpp
 )
 
 target_include_directories(program PRIVATE
@@ -29,6 +34,7 @@ target_include_directories(program PRIVATE
     # UI
     src/ui
     src/ui/screens
+    src/ui/screens/editor_elements
 )
 
 target_link_libraries(program PRIVATE

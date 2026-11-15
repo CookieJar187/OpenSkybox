@@ -9,32 +9,40 @@
 #include "state.hpp"
 #include "properties.hpp"
 
+#include "editor_elements.hpp"
+
 // ---- SCREENS ---- //
 
-// Main Menu
-struct MainMenuScreen
+namespace Screen
 {
-private:
-    State *state;
+    // Main Menu
+    struct MainMenuScreen
+    {
+    private:
+        State *state;
 
-public:
-    MainMenuScreen(State *state);
+    public:
+        MainMenuScreen(State *state);
 
-    void build();
-};
+        void build();
+    };
 
-// Editor
-struct EditorScreen
-{
-private:
-    State *state;
-    Properties *properties;
+    // Editor
+    struct EditorScreen
+    {
+    private:
+        State *state;
+        ::Properties *properties;
 
-public:
-    EditorScreen(
-        State *state,
-        Properties *properties
-    );
+        EditorElements::FileMenuBarUi fileMenuBarUi{state};
+        EditorElements::PropertiesUi propertiesUi{state, properties};
 
-    void build();
-};
+    public:
+        EditorScreen(
+            State *state,
+            ::Properties *properties
+        );
+
+        void build();
+    };
+}
