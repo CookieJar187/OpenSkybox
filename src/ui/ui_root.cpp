@@ -20,6 +20,13 @@ UiRoot::UiRoot(
     ImGui_ImplOpenGL3_Init("#version 330");
 }
 
+UiRoot::~UiRoot()
+{
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
+}
+
 void UiRoot::build()
 {
     ImGui_ImplOpenGL3_NewFrame();
@@ -46,11 +53,4 @@ void UiRoot::draw()
 {
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-}
-
-void UiRoot::destroy()
-{
-    ImGui_ImplOpenGL3_Shutdown();
-    ImGui_ImplGlfw_Shutdown();
-    ImGui::DestroyContext();
 }

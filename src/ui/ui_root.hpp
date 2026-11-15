@@ -21,8 +21,8 @@ public:
         GLFWwindow *window,
         Properties &properties
     );
+    ~UiRoot();
 
     void build();
     void draw();
-    void destroy();
 };

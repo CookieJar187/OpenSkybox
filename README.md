@@ -1,5 +1,7 @@
 # OpenSkybox
 
+<img src="src/assets/icon.png" alt="OpenSkybox Icon" width="100">
+
 OpenSkybox is a free, open-source skybox editor meant to provide a simple and intuitive way to create customizable skies for video games, animations, and other 3D media/applications.
 
 ## Dependencies
@@ -7,6 +9,7 @@ OpenSkybox is a free, open-source skybox editor meant to provide a simple and in
 - GLAD
 - GLFW
 - Dear ImGui
+- Stb
 
 ## License
 

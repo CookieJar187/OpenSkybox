@@ -11,6 +11,8 @@
 
 #include "editor_elements.hpp"
 
+#include "texture.hpp"
+
 // ---- SCREENS ---- //
 
 namespace Screen
@@ -20,9 +22,11 @@ namespace Screen
     {
     private:
         State *state;
+        Texture appIcon;
 
     public:
         MainMenuScreen(State *state);
+        ~MainMenuScreen();
 
         void build();
     };

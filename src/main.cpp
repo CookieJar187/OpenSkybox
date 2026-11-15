@@ -1,5 +1,8 @@
 #include <iostream>
 
+//#define STB_IMAGE_IMPLEMENTATION
+#include <stb_image.h>
+
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
@@ -8,6 +11,31 @@
 #include "state.hpp"
 #include "ui_root.hpp"
 #include "properties.hpp"
+
+void setWindowIcon(GLFWwindow *window)
+{
+    int width, height, channels;
+
+    unsigned char* pixels = stbi_load(
+        "src/assets/icon.png",
+        &width,
+        &height,
+        &channels,
+        4
+    );
+
+    if (!pixels)
+        throw std::runtime_error("Failed to load window icon");
+
+    GLFWimage icon;
+    icon.width = width;
+    icon.height = height;
+    icon.pixels = pixels;
+
+    glfwSetWindowIcon(window, 1, &icon);
+
+    stbi_image_free(pixels);
+}
 
 int main()
 {
@@ -18,6 +46,7 @@ int main()
     }
 
     GLFWwindow *window = glfwCreateWindow(400, 300, "OpenSkybox", nullptr, nullptr);
+    setWindowIcon(window);
 
     if (!window)
     {
@@ -41,7 +70,6 @@ int main()
     Camera camera{window};
     State state{};
     Properties properties;
-    UiRoot uiRoot{state, window, properties};
 
     GLuint skyVAO;
     glGenVertexArrays(1, &skyVAO);
@@ -50,41 +78,45 @@ int main()
         "src/shaders/sky.vert",
         "src/shaders/sky.frag");
 
-    while (!glfwWindowShouldClose(window))
     {
-        glfwPollEvents();
+        UiRoot uiRoot{state, window, properties};
 
-        uiRoot.build();
-        camera.update();
+        while (!glfwWindowShouldClose(window))
+        {
+            glfwPollEvents();
 
-        int width, height;
-        glfwGetFramebufferSize(window, &width, &height);
+            uiRoot.build();
+            camera.update();
 
-        glViewport(0, 0, width, height);
+            int width, height;
+            glfwGetFramebufferSize(window, &width, &height);
 
-        glClear(GL_COLOR_BUFFER_BIT);
+            glViewport(0, 0, width, height);
 
-        glUseProgram(skyProgram);
-        camera.apply(skyProgram);
-        properties.apply(skyProgram);
+            glClear(GL_COLOR_BUFFER_BIT);
 
-        glUniform2f(
-            glGetUniformLocation(skyProgram, "uResolution"),
-            static_cast<float>(width),
-            static_cast<float>(height)
-        );
+            glUseProgram(skyProgram);
+            camera.apply(skyProgram);
+            properties.apply(skyProgram);
 
-        glBindVertexArray(skyVAO);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+            glUniform2f(
+                glGetUniformLocation(skyProgram, "uResolution"),
+                static_cast<float>(width),
+                static_cast<float>(height)
+            );
 
-        uiRoot.draw();
+            glBindVertexArray(skyVAO);
+            glDrawArrays(GL_TRIANGLES, 0, 3);
 
-        glfwSwapBuffers(window);
+            uiRoot.draw();
 
-        if (state.getState() == StateType::Exit)
-            break;
+            glfwSwapBuffers(window);
+
+            if (state.getState() == StateType::Exit)
+                break;
+        }
     }
-
+    
     glDeleteVertexArrays(1, &skyVAO);
     glDeleteProgram(skyProgram);
     glfwDestroyWindow(window);
