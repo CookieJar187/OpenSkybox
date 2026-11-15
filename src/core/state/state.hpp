@@ -3,7 +3,7 @@
 enum class StateType{
     MainMenu,
     Tutorial,
-    InGame,
+    Editor,
     Exit
 };
 

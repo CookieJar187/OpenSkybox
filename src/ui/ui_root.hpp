@@ -4,9 +4,8 @@
 #include <GLFW/glfw3.h>
 
 #include "state.hpp"
-#include "main_menu_screen.hpp"
-#include "in_game_screen.hpp"
 #include "properties.hpp"
+#include "screens.hpp"
 
 class UiRoot{
 private:
@@ -14,7 +13,7 @@ private:
     Properties *properties;
 
     MainMenuScreen mainMenuScreen{state};
-    InGameScreen inGameScreen{state, properties};
+    EditorScreen editorScreen{state, properties};
     
 public:
     UiRoot(State &state, GLFWwindow *window, Properties &properties);

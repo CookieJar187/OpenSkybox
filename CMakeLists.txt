@@ -13,16 +13,22 @@ add_executable(program
     src/main.cpp
     src/core/shader_loader/shader_loader.cpp
     src/core/camera/camera.cpp
+
+    # UI
     src/ui/ui_root.cpp
+    src/ui/screens/main_menu_screen.cpp
+    src/ui/screens/editor_screen.cpp
 )
 
 target_include_directories(program PRIVATE
     src/core/shader_loader
     src/core/camera
     src/core/state
+    src/core/properties
+
+    # UI
     src/ui
     src/ui/screens
-    src/core/properties
 )
 
 target_link_libraries(program PRIVATE
@@ -30,3 +36,12 @@ target_link_libraries(program PRIVATE
     glad::glad
     imgui::imgui
 )
+
+if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+    target_compile_options(program PRIVATE
+        -Wall
+        -Wextra
+        -Wpedantic
+        -Werror=return-type
+    )
+endif()

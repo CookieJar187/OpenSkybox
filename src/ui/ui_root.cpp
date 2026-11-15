@@ -32,8 +32,8 @@ void UiRoot::build()
         mainMenuScreen.build();
         break;
 
-    case (StateType::InGame):
-        inGameScreen.build();
+    case (StateType::Editor):
+        editorScreen.build();
         break;
     
     default:
