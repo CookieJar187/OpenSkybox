@@ -12,8 +12,6 @@ void EditorElements::PropertiesUiElement::SunUi::build()
 {
     if (ImGui::CollapsingHeader("Sun"))
     {
-        ImGui::Indent();
-
         ImGui::Checkbox("Sun Enabled", &properties->sunEnabled);
         ImGui::ColorEdit3("Sun Color", properties->sunColor);
         ImGui::SliderAngle(
@@ -51,7 +49,5 @@ void EditorElements::PropertiesUiElement::SunUi::build()
         );
         if (ImGui::IsItemHovered())
             ImGui::SetTooltip("Angular radius in degrees.");
-
-        ImGui::Unindent();
     }
 }

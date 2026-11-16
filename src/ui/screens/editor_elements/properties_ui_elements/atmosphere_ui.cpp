@@ -10,10 +10,8 @@ EditorElements::PropertiesUiElement::AtmosphereUi::AtmosphereUi(
 
 void EditorElements::PropertiesUiElement::AtmosphereUi::build()
 {
-        if (ImGui::CollapsingHeader("Atmosphere"))
+    if (ImGui::CollapsingHeader("Atmosphere"))
     {
-        ImGui::Indent();
-
         if (ImGui::BeginCombo(
             "Atmosphere Type",
             properties->atmosphereTypes[properties->currentAtmosphereType]))
@@ -44,17 +42,17 @@ void EditorElements::PropertiesUiElement::AtmosphereUi::build()
                 ImGui::ColorEdit3("Nadir", properties->twoColor.nadir);
                 ImGui::DragFloat(
                     "Transition Position",
-                    &properties->twoColor.transitionPosition,
+                    &properties->twoColor.transition.position,
                     0.005f,
-                    0.0f,
-                    0.5f
+                    GradientTransition::minPosition,
+                    GradientTransition::maxPosition
                 );
                 ImGui::DragFloat(
                     "Transition Width",
-                    &properties->twoColor.transitionWidth,
+                    &properties->twoColor.transition.width,
                     0.005f,
-                    0.0f,
-                    0.5f
+                    GradientTransition::minWidth,
+                    GradientTransition::maxWidth
                 );
 
                 break;
@@ -65,35 +63,33 @@ void EditorElements::PropertiesUiElement::AtmosphereUi::build()
                 ImGui::ColorEdit3("Nadir", properties->threeColor.nadir);
                 ImGui::DragFloat(
                     "Upper Transition Position",
-                    &properties->threeColor.upperTransitionPosition,
+                    &properties->threeColor.upperTransition.position,
                     0.005f,
-                    0.0f,
-                    0.5f
+                    GradientTransition::minPosition,
+                    GradientTransition::maxPosition
                 );
                 ImGui::DragFloat(
                     "Upper Transition Width",
-                    &properties->threeColor.upperTransitionWidth,
+                    &properties->threeColor.upperTransition.width,
                     0.005f,
-                    0.0f,
-                    0.5f
+                    GradientTransition::minWidth,
+                    GradientTransition::maxWidth
                 );
                 ImGui::DragFloat(
                     "Lower Transition Position",
-                    &properties->threeColor.lowerTransitionPosition,
+                    &properties->threeColor.lowerTransition.position,
                     0.005f,
-                    -0.5f,
-                    0.0f
+                    GradientTransition::minPosition,
+                    GradientTransition::maxPosition
                 );
                 ImGui::DragFloat(
                     "Lower Transition Width",
-                    &properties->threeColor.lowerTransitionWidth,
+                    &properties->threeColor.lowerTransition.width,
                     0.005f,
-                    0.0f,
-                    0.5f
+                    GradientTransition::minWidth,
+                    GradientTransition::maxWidth
                 );
                 break;
         }
-
-        ImGui::Unindent();
     }
 }

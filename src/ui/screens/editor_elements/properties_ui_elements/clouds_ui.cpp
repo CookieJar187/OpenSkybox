@@ -12,8 +12,6 @@ void EditorElements::PropertiesUiElement::CloudsUi::build()
 {
     if (ImGui::CollapsingHeader("Clouds"))
     {
-        ImGui::Indent();
-
         ImGui::Checkbox("Clouds Enabled", &properties->cloudsEnabled);
         ImGui::DragFloat(
             "Cloud Coverage",
@@ -31,7 +29,5 @@ void EditorElements::PropertiesUiElement::CloudsUi::build()
         );
         if (ImGui::IsItemHovered())
             ImGui::SetTooltip("Controls the thickness of the cloud layer.");
-
-        ImGui::Unindent();
     }
 }

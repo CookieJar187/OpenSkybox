@@ -4,6 +4,18 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+struct GradientTransition
+{
+    float position = 0.0f;
+    float width = 0.5f;
+
+    static constexpr float minPosition = -1.0f;
+    static constexpr float maxPosition = 1.0f;
+
+    static constexpr float minWidth = 0.01f;
+    static constexpr float maxWidth = 2.0f;
+};
+
 struct SolidColor
 {
     float color[3] = {0.05f, 0.25f, 0.65f};
@@ -13,8 +25,7 @@ struct TwoColorGradient
     float zenith[3] = {0.65f, 0.80f, 0.95f};
     float nadir[3] = {0.25f, 0.35f, 0.45f};
 
-    float transitionPosition = 0.0f;
-    float transitionWidth = 0.5f;
+    GradientTransition transition;
 };
 struct ThreeColorGradient
 {
@@ -22,11 +33,8 @@ struct ThreeColorGradient
     float horizon[3] = {0.65f, 0.80f, 0.95f};
     float nadir[3] = {0.25f, 0.35f, 0.45f};
 
-    float upperTransitionPosition = 0.5f;
-    float upperTransitionWidth = 0.5f;
-
-    float lowerTransitionPosition = -0.5f;
-    float lowerTransitionWidth = 0.5f;
+    GradientTransition upperTransition{0.5f, 0.5f};
+    GradientTransition lowerTransition{-0.5f, 0.5f};
 };
 
 struct Properties
@@ -88,11 +96,11 @@ struct Properties
                 );
                 glUniform1f(
                     glGetUniformLocation(shaderProgram, "transitionPosition"),
-                    twoColor.transitionPosition
+                    twoColor.transition.position
                 );
                 glUniform1f(
                     glGetUniformLocation(shaderProgram, "transitionWidth"),
-                    twoColor.transitionWidth
+                    twoColor.transition.width
                 );
                 break;
 
@@ -114,19 +122,19 @@ struct Properties
                 );
                 glUniform1f(
                     glGetUniformLocation(shaderProgram, "upperTransitionPosition"),
-                    threeColor.upperTransitionPosition
+                    threeColor.upperTransition.position
                 );
                 glUniform1f(
                     glGetUniformLocation(shaderProgram, "upperTransitionWidth"),
-                    threeColor.upperTransitionWidth
+                    threeColor.upperTransition.width
                 );
                 glUniform1f(
                     glGetUniformLocation(shaderProgram, "lowerTransitionPosition"),
-                    threeColor.lowerTransitionPosition
+                    threeColor.lowerTransition.position
                 );
                 glUniform1f(
                     glGetUniformLocation(shaderProgram, "lowerTransitionWidth"),
-                    threeColor.lowerTransitionWidth
+                    threeColor.lowerTransition.width
                 );
                 break;
 
