@@ -23,6 +23,10 @@ void EditorElements::FileMenuBarUi::build()
                 // Handle Save file
             }
             ImGui::Separator();
+            if (ImGui::MenuItem("Export", "Ctrl+E")) {
+                state->setState(StateType::Export);
+            }
+            ImGui::Separator();
             if (ImGui::MenuItem("Exit", "Alt+F4")) {
                 state->setState(StateType::Exit);
             }

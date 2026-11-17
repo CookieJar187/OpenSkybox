@@ -13,13 +13,14 @@
 
 #include "texture.hpp"
 
+#include "skybox_exporter.hpp"
+
 // ---- SCREENS ---- //
 
 namespace Screen
 {
     // Main Menu
-    struct MainMenuScreen
-    {
+    struct MainMenuScreen {
     private:
         State *state;
         Texture appIcon;
@@ -32,8 +33,7 @@ namespace Screen
     };
 
     // Editor
-    struct EditorScreen
-    {
+    struct EditorScreen {
     private:
         State *state;
         ::Properties *properties;
@@ -46,6 +46,24 @@ namespace Screen
             State *state,
             ::Properties *properties
         );
+
+        void build();
+    };
+
+    // Export
+    struct ExportScreen {
+    private:
+        State *state;
+        ::Properties *properties;
+        SkyboxExporter *skyboxExporter;
+
+    public:
+        ExportScreen(
+            State *state,
+            ::Properties *properties,
+            SkyboxExporter *skyboxExporter
+        );
+        ~ExportScreen();
 
         void build();
     };

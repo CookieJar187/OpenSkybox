@@ -3,8 +3,9 @@
 UiRoot::UiRoot(
     State &state,
     GLFWwindow *window,
-    Properties &properties
-) : state(&state), properties(&properties)
+    Properties &properties,
+    SkyboxExporter &skyboxExporter
+) : state(&state), properties(&properties), skyboxExporter(&skyboxExporter)
 {
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -41,6 +42,10 @@ void UiRoot::build()
 
     case (StateType::Editor):
         editorScreen.build();
+        break;
+
+    case (StateType::Export):
+        exportScreen.build();
         break;
     
     default:

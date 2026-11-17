@@ -11,6 +11,7 @@
 #include "state.hpp"
 #include "ui_root.hpp"
 #include "properties.hpp"
+#include "skybox_exporter.hpp"
 
 void setWindowIcon(GLFWwindow *window)
 {
@@ -76,10 +77,22 @@ int main()
 
     unsigned int skyProgram = make_shader(
         "src/shaders/sky.vert",
-        "src/shaders/sky.frag");
+        "src/shaders/sky.frag"
+    );
+
+    SkyboxExporter skyboxExporter{
+        skyProgram,
+        skyVAO,
+        properties
+    };
 
     {
-        UiRoot uiRoot{state, window, properties};
+        UiRoot uiRoot{
+            state,
+            window,
+            properties,
+            skyboxExporter
+        };
 
         while (!glfwWindowShouldClose(window))
         {

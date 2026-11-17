@@ -4,6 +4,7 @@ enum class StateType{
     MainMenu,
     Tutorial,
     Editor,
+    Export,
     Exit
 };
 

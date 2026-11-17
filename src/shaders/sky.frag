@@ -5,6 +5,9 @@ out vec4 FragColor;
 uniform vec2 uResolution;
 uniform vec2 uCameraAngles;
 
+uniform bool exportMode;
+uniform int exportFace;
+
 uniform int atmosphereMode;
 
 uniform vec3 solidColor;
@@ -30,6 +33,19 @@ uniform float sunIntensity;
 uniform float sunGlare;
 uniform float sunSize;
 
+vec3 getCubemapDirection(vec2 uv, int face)
+{
+    // uv ranges from -1 to +1 on both axes.
+
+    if (face == 0) return normalize(vec3( 1.0, uv.y, -uv.x)); // +X
+    if (face == 1) return normalize(vec3(-1.0, uv.y,  uv.x)); // -X
+    if (face == 2) return normalize(vec3( uv.x,  1.0,  uv.y)); // +Y
+    if (face == 3) return normalize(vec3( uv.x, -1.0, -uv.y)); // -Y
+    if (face == 4) return normalize(vec3( uv.x, uv.y,  1.0)); // +Z
+
+    return normalize(vec3(-uv.x, uv.y, -1.0)); // -Z
+}
+
 vec3 getSunDirection(float azimuth, float elevation)
 {
     return normalize(vec3(
@@ -41,30 +57,40 @@ vec3 getSunDirection(float azimuth, float elevation)
 
 void main()
 {
-    vec2 uv = (gl_FragCoord.xy / uResolution) * 2.0 - 1.0;
+    vec3 direction;
 
-    uv.x *= uResolution.x / uResolution.y;
+    if (exportMode) // Export mode
+    {
+        vec2 uv = (gl_FragCoord.xy / uResolution) * 2.0 - 1.0;
+        direction = getCubemapDirection(uv, exportFace);
+    }
+    else // Camera mode
+    {
+        vec2 uv = (gl_FragCoord.xy / uResolution) * 2.0 - 1.0;
 
-    float yaw = radians(uCameraAngles.x);
-    float pitch = radians(uCameraAngles.y);
+        uv.x *= uResolution.x / uResolution.y;
 
-    vec3 direction = normalize(vec3(uv.x, uv.y, -1.0));
+        float yaw = radians(uCameraAngles.x);
+        float pitch = radians(uCameraAngles.y);
 
-    // pitch
-    mat3 pitchRotation = mat3(
-        1.0, 0.0, 0.0,
-        0.0, cos(pitch), -sin(pitch),
-        0.0, sin(pitch), cos(pitch)
-    );
+        direction = normalize(vec3(uv.x, uv.y, -1.0));
 
-    // yaw
-    mat3 yawRotation = mat3(
-        cos(yaw), 0.0, sin(yaw),
-        0.0, 1.0, 0.0,
-        -sin(yaw), 0.0, cos(yaw)
-    );
+        // pitch
+        mat3 pitchRotation = mat3(
+            1.0, 0.0, 0.0,
+            0.0, cos(pitch), -sin(pitch),
+            0.0, sin(pitch), cos(pitch)
+        );
 
-    direction = yawRotation * pitchRotation * direction;
+        // yaw
+        mat3 yawRotation = mat3(
+            cos(yaw), 0.0, sin(yaw),
+            0.0, 1.0, 0.0,
+            -sin(yaw), 0.0, cos(yaw)
+        );
+
+        direction = yawRotation * pitchRotation * direction;
+    }
 
     // gradient
     vec3 color;
