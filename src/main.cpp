@@ -46,7 +46,7 @@ int main()
         return 1;
     }
 
-    GLFWwindow *window = glfwCreateWindow(400, 300, "OpenSkybox", nullptr, nullptr);
+    GLFWwindow *window = glfwCreateWindow(600, 400, "OpenSkybox", nullptr, nullptr);
     setWindowIcon(window);
 
     if (!window)

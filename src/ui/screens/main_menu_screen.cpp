@@ -14,11 +14,30 @@ Screen::MainMenuScreen::~MainMenuScreen()
 
 void Screen::MainMenuScreen::build()
 {
+    // Window init
     ImGuiWindowFlags flags =
         ImGuiWindowFlags_NoCollapse;
 
-    ImGui::Begin("OpenSkybox", nullptr, flags);
+    ImGuiViewport* viewport = ImGui::GetMainViewport();
 
+    ImGui::SetNextWindowSize(
+        ImVec2(viewport->Size.x * 0.4f, viewport->Size.y * 0.5f),
+        ImGuiCond_FirstUseEver
+    );
+
+    ImGui::SetNextWindowPos(
+        viewport->GetCenter(),
+        ImGuiCond_FirstUseEver,
+        ImVec2(0.5f, 0.5f)
+    );
+
+    bool open = true;
+
+    ImGui::Begin("OpenSkybox", &open, flags);
+    if (open == false)
+        state->setState(StateType::Editor);
+
+    // Text
     float width = ImGui::GetWindowWidth();
 
     ImGui::SetWindowFontScale(1.5f);
@@ -38,7 +57,7 @@ void Screen::MainMenuScreen::build()
     ImGui::Separator();
     ImGui::TextWrapped("Early alpha - Software still in early development.");
 
-    ImGui::SetWindowFontScale(1.25f);
+    // Buttons
     if (ImGui::Button("Start"))
     {
         state->setState(StateType::Editor);

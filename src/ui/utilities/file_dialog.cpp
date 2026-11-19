@@ -5,86 +5,89 @@
 
 #include <nfd.h>
 
-std::optional<std::filesystem::path>
-    FileDialog::promptDirSelect() {
+FileDialog::FileDialog()
+{
+    if (NFD_Init() != NFD_OKAY)
+        throw std::runtime_error(NFD_GetError());
+}
+
+FileDialog::~FileDialog()
+{
+    NFD_Quit();
+}
+
+std::filesystem::path FileDialog::promptDirSelect() {
+
+    nfdu8char_t *outPath = nullptr;
+    bool pathPicked = false;
 
     try {
-
-        if (NFD_Init() != NFD_OKAY)
-            throw std::runtime_error(NFD_GetError());
-
-        nfdu8char_t *outPath;
         nfdresult_t result = NFD_PickFolderU8(&outPath, nullptr);
 
-        if (result == NFD_OKAY) {
+        if (result == NFD_OKAY)
+        {
+            pathPicked = true;
 
             std::filesystem::path path =
                 std::filesystem::u8path(outPath);
 
             NFD_FreePathU8(outPath);
-
             return path;
         }
-        else if (result == NFD_CANCEL) {
-
-            std::cout << "User pressed cancel\n";
+        else if (result == NFD_ERROR)
+        {
+            std::cerr << "FileDialog error: "
+                << NFD_GetError() << std::endl;
         }
-        else {
-
-            printf("FileDialog error: %s\n", NFD_GetError());
-        }
-
-        NFD_Quit();
     }
-    catch(std::exception& e) {
-
+    catch(const std::exception& e)
+    {
         std::cerr << "FileDialog error: " << e.what() << std::endl;
     }
 
-    return std::nullopt;
+    if (pathPicked)
+        NFD_FreePathU8(outPath);
+
+    return std::filesystem::path{};
 }
 
-std::optional<std::filesystem::path>
-    FileDialog::promptImageSelect() {
+std::filesystem::path FileDialog::promptImageSelect() {
+
+    nfdu8char_t *outPath = nullptr;
+    bool pathPicked = false;
 
     try {
-
-        if (NFD_Init() != NFD_OKAY)
-            throw std::runtime_error(NFD_GetError());
-
-        nfdu8char_t *outPath;
         nfdu8filteritem_t filters[1] = {
             { "Images", "png,jpg,jpeg" }
         };
-        nfdopendialogu8args_t args = {0};
+        nfdopendialogu8args_t args = {};
         args.filterList = filters;
         args.filterCount = 1;
         nfdresult_t result = NFD_OpenDialogU8_With(&outPath, &args);
 
-        if (result == NFD_OKAY) {
-            
+        if (result == NFD_OKAY)
+        {
+            pathPicked = true;
+
             std::filesystem::path path =
                 std::filesystem::u8path(outPath);
 
             NFD_FreePathU8(outPath);
-
             return path;
         }
-        else if (result == NFD_CANCEL) {
-
-            std::cout << "User pressed cancel\n";
+        else if (result == NFD_ERROR)
+        {
+            std::cerr << "FileDialog error: "
+                << NFD_GetError() << std::endl;
         }
-        else {
-
-            printf("FileDialog error: %s\n", NFD_GetError());
-        }
-
-        NFD_Quit();
     }
-    catch(std::exception& e) {
-
+    catch(const std::exception& e)
+    {
         std::cerr << "FileDialog error: " << e.what() << std::endl;
     }
 
-    return std::nullopt;
+    if (pathPicked)
+        NFD_FreePathU8(outPath);
+
+    return std::filesystem::path{};
 }

@@ -1,13 +1,14 @@
 #pragma once
 
-#include <string>
 #include <filesystem>
+#include <string>
 
 #include "properties.hpp"
 
-class SkyboxExporter {
+class SkyboxExporter
+{
 public:
-    static const int minResolution = 16;
+    static const int minResolution = 4;
     static const int maxResolution = 8192;
 
     SkyboxExporter(
@@ -16,23 +17,27 @@ public:
         Properties &properties
     );
 
-    void exportPNG();
-
-    void setExportDirectory(
-        std::filesystem::path &path
-    );
-    void setResolution(
-        int resolution
-    );
+    void setExportPath(std::filesystem::path &path);
+    void setResolution(int resolution);
 
     int getResolution();
-    std::filesystem::path &getExportDirectory();
+    std::filesystem::path &getExportPath();
+    std::string &getErrorMessage();
+
+    bool isExportPathValid();
+    int tryExportPng();
 
 private:
     unsigned int &shaderProgram;
     unsigned int &skyVAO;
     Properties *properties;
 
-    std::filesystem::path exportDirectory;
+    std::filesystem::path exportPath =
+        std::filesystem::current_path();
+
     int resolution = 1024;
+
+    std::string errorMessage;
+
+    void exportPng();
 };

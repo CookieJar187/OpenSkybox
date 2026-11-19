@@ -15,13 +15,72 @@ SkyboxExporter::SkyboxExporter(
     unsigned int &shaderProgram,
     unsigned int &skyVAO,
     Properties &properties
-) : shaderProgram(shaderProgram), skyVAO(skyVAO), properties(&properties)
+) :
+shaderProgram(shaderProgram),
+skyVAO(skyVAO),
+properties(&properties)
 {}
 
-void SkyboxExporter::exportPNG() {
+// Setters
+void SkyboxExporter::setExportPath(
+    std::filesystem::path &path
+) {
+    if (std::filesystem::exists(path))
+        exportPath = path;
+    else
+    {
+        exportPath.clear();
+    }
+}
+void SkyboxExporter::setResolution(int value)
+{
+    if (value >= minResolution && value <= maxResolution)
+        resolution = value;
+}
+
+// Getters
+int SkyboxExporter::getResolution()
+{
+    return resolution;
+}
+std::filesystem::path &SkyboxExporter::getExportPath()
+{
+    return exportPath;
+}
+std::string &SkyboxExporter::getErrorMessage()
+{
+    return errorMessage;
+}
+
+// Misc
+bool SkyboxExporter::isExportPathValid()
+{
+    return std::filesystem::exists(exportPath);
+}
+
+int SkyboxExporter::tryExportPng()
+{
+    try {
+        exportPng();
+        errorMessage.clear();
+    }
+    catch (const std::exception &e)
+    {
+        errorMessage = std::string{"Error: "} + e.what();
+        return 1;
+    }
+
+    return 0;
+}
+
+// Export algorithm
+void SkyboxExporter::exportPng() {
 
     if (resolution <= 0)
         throw std::runtime_error("Invalid skybox resolution");
+
+    if (!isExportPathValid())
+        throw std::runtime_error("Invalid skybox export path");
 
     const std::array<const char*, 6> names = {
         "right", "left", "top",
@@ -113,7 +172,7 @@ void SkyboxExporter::exportPNG() {
 
         glBindVertexArray(skyVAO);
 
-        std::filesystem::create_directories(exportDirectory);
+        std::filesystem::create_directories(exportPath);
 
         std::vector<unsigned char> pixels(
             static_cast<size_t>(resolution) * resolution * 4
@@ -153,7 +212,7 @@ void SkyboxExporter::exportPNG() {
                 );
             }
 
-            auto path = std::filesystem::path(exportDirectory)
+            auto path = std::filesystem::path(exportPath)
                       / (std::string(names[face]) + ".png");
 
             if (!stbi_write_png(
@@ -181,24 +240,4 @@ void SkyboxExporter::exportPNG() {
     }
 
     cleanup();
-}
-
-void SkyboxExporter::setExportDirectory(
-    std::filesystem::path &path
-) {
-    exportDirectory = path;
-}
-
-void SkyboxExporter::setResolution(
-    int value
-) {
-    if (value >= minResolution && value <= maxResolution)
-        resolution = value;
-}
-
-int SkyboxExporter::getResolution() {
-    return resolution;
-}
-std::filesystem::path &SkyboxExporter::getExportDirectory() {
-    return exportDirectory;
 }

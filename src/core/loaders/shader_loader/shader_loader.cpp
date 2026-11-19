@@ -29,7 +29,7 @@ unsigned int make_shader(const std::string& vertex_filepath, const std::string& 
     if (!success) {
         char errorLog[1024];
         glGetProgramInfoLog(shader, 1024, NULL, errorLog);
-        std::cout << "Shader Linking error:\n" << errorLog << std::endl;
+        std::cerr << "Shader Linking error:\n" << errorLog << std::endl;
     }
 
     for (unsigned int shaderModule : modules) {
@@ -64,7 +64,7 @@ unsigned int make_module(const std::string& filepath, unsigned int module_type) 
     if (!success) {
         char errorLog[1024];
         glGetShaderInfoLog(shaderModule, 1024, NULL, errorLog);
-        std::cout << "Shader Module compilation error:\n" << errorLog << std::endl;
+        std::cerr << "Shader Module compilation error:\n" << errorLog << std::endl;
     }
 
     return shaderModule;

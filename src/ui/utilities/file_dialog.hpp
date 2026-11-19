@@ -1,13 +1,13 @@
 #pragma once
 
 #include <filesystem>
-#include <optional>
 
-namespace FileDialog {
+class FileDialog
+{
+public:
+    FileDialog();
+    ~FileDialog();
 
-    std::optional<std::filesystem::path>
-        promptDirSelect();
-
-    std::optional<std::filesystem::path>
-        promptImageSelect();
-}
+    std::filesystem::path promptDirSelect();
+    std::filesystem::path promptImageSelect();
+};

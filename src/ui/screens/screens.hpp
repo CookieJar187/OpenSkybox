@@ -10,6 +10,7 @@
 #include "properties.hpp"
 
 #include "editor_elements.hpp"
+#include "file_dialog.hpp"
 
 #include "texture.hpp"
 
@@ -36,7 +37,7 @@ namespace Screen
     struct EditorScreen {
     private:
         State *state;
-        ::Properties *properties;
+        Properties *properties;
 
         EditorElements::FileMenuBarUi fileMenuBarUi{state};
         EditorElements::PropertiesUi propertiesUi{state, properties};
@@ -44,7 +45,7 @@ namespace Screen
     public:
         EditorScreen(
             State *state,
-            ::Properties *properties
+            Properties *properties
         );
 
         void build();
@@ -54,14 +55,17 @@ namespace Screen
     struct ExportScreen {
     private:
         State *state;
-        ::Properties *properties;
+        Properties *properties;
         SkyboxExporter *skyboxExporter;
+
+        FileDialog *fileDialog;
 
     public:
         ExportScreen(
             State *state,
-            ::Properties *properties,
-            SkyboxExporter *skyboxExporter
+            Properties *properties,
+            SkyboxExporter *skyboxExporter,
+            FileDialog &fileDialog
         );
         ~ExportScreen();
 

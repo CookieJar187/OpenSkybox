@@ -3,6 +3,8 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include "file_dialog.hpp"
+
 #include "state.hpp"
 #include "properties.hpp"
 #include "screens.hpp"
@@ -14,9 +16,16 @@ private:
     Properties *properties;
     SkyboxExporter *skyboxExporter;
 
+    FileDialog fileDialog;
+
     Screen::MainMenuScreen mainMenuScreen{state};
     Screen::EditorScreen editorScreen{state, properties};
-    Screen::ExportScreen exportScreen{state, properties, skyboxExporter};
+    Screen::ExportScreen exportScreen{
+        state,
+        properties,
+        skyboxExporter,
+        fileDialog
+    };
     
 public:
     UiRoot(
