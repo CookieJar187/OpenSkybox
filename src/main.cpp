@@ -10,8 +10,10 @@
 #include "camera.hpp"
 #include "state.hpp"
 #include "ui_root.hpp"
-#include "properties.hpp"
 #include "skybox_exporter.hpp"
+
+#include "config.hpp"
+#include "config_applier.hpp"
 
 void setWindowIcon(GLFWwindow *window)
 {
@@ -70,7 +72,6 @@ int main()
     //
     Camera camera{window};
     State state{};
-    Properties properties;
 
     GLuint skyVAO;
     glGenVertexArrays(1, &skyVAO);
@@ -80,17 +81,24 @@ int main()
         "src/shaders/sky.frag"
     );
 
-    SkyboxExporter skyboxExporter{
+    Config config{};
+
+    ConfigApplier configApplier {
+        config,
+        skyProgram
+    };
+
+    SkyboxExporter skyboxExporter {
         skyProgram,
         skyVAO,
-        properties
+        configApplier
     };
 
     {
-        UiRoot uiRoot{
+        UiRoot uiRoot {
             state,
             window,
-            properties,
+            config,
             skyboxExporter
         };
 
@@ -110,7 +118,7 @@ int main()
 
             glUseProgram(skyProgram);
             camera.apply(skyProgram);
-            properties.apply(skyProgram);
+            configApplier.applyIfDirty();
 
             glUniform2f(
                 glGetUniformLocation(skyProgram, "uResolution"),

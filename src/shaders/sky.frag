@@ -4,6 +4,7 @@ out vec4 FragColor;
 
 uniform vec2 uResolution;
 uniform vec2 uCameraAngles;
+uniform float uCameraFov;
 
 uniform bool exportMode;
 uniform int exportFace;
@@ -70,10 +71,13 @@ void main()
 
         uv.x *= uResolution.x / uResolution.y;
 
+        float fov = radians(uCameraFov);
+        float distance = 1.0 / tan(fov * 0.5);
+
         float yaw = radians(uCameraAngles.x);
         float pitch = radians(uCameraAngles.y);
 
-        direction = normalize(vec3(uv.x, uv.y, -1.0));
+        direction = normalize(vec3(uv.x, uv.y, -distance));
 
         // pitch
         mat3 pitchRotation = mat3(

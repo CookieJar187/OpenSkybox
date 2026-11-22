@@ -6,23 +6,23 @@
 #include "file_dialog.hpp"
 
 #include "state.hpp"
-#include "properties.hpp"
+#include "config.hpp"
 #include "screens.hpp"
 #include "skybox_exporter.hpp"
 
 class UiRoot{
 private:
     State *state;
-    Properties *properties;
+    Config *config;
     SkyboxExporter *skyboxExporter;
 
     FileDialog fileDialog;
 
     Screen::MainMenuScreen mainMenuScreen{state};
-    Screen::EditorScreen editorScreen{state, properties};
+    Screen::EditorScreen editorScreen{state, config};
     Screen::ExportScreen exportScreen{
         state,
-        properties,
+        config,
         skyboxExporter,
         fileDialog
     };
@@ -31,7 +31,7 @@ public:
     UiRoot(
         State &state,
         GLFWwindow *window,
-        Properties &properties,
+        Config &config,
         SkyboxExporter &skyboxExporter
     );
     ~UiRoot();

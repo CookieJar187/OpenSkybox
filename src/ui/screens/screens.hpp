@@ -7,7 +7,7 @@
 #include <imgui_impl_opengl3.h>
 
 #include "state.hpp"
-#include "properties.hpp"
+#include "config.hpp"
 
 #include "editor_elements.hpp"
 #include "file_dialog.hpp"
@@ -37,15 +37,16 @@ namespace Screen
     struct EditorScreen {
     private:
         State *state;
-        Properties *properties;
+        Config *config;
 
         EditorElements::FileMenuBarUi fileMenuBarUi{state};
-        EditorElements::PropertiesUi propertiesUi{state, properties};
+        EditorElements::PropertiesUi propertiesUi{state, config};
+        EditorElements::CameraSettingsUi cameraSettingsUi{config};
 
     public:
         EditorScreen(
             State *state,
-            Properties *properties
+            Config *config
         );
 
         void build();
@@ -55,7 +56,7 @@ namespace Screen
     struct ExportScreen {
     private:
         State *state;
-        Properties *properties;
+        Config *config;
         SkyboxExporter *skyboxExporter;
 
         FileDialog *fileDialog;
@@ -63,7 +64,7 @@ namespace Screen
     public:
         ExportScreen(
             State *state,
-            Properties *properties,
+            Config *config,
             SkyboxExporter *skyboxExporter,
             FileDialog &fileDialog
         );

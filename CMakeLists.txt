@@ -19,6 +19,10 @@ add_executable(program
     src/core/loaders/shader_loader/shader_loader.cpp
     src/core/loaders/texture_loader/texture_loader.cpp
 
+    # Config
+    src/core/config/config.cpp
+    src/core/config_applier/config_applier.cpp
+
     # Skybox exporter
     src/core/skybox_exporter/skybox_exporter.cpp
 
@@ -32,6 +36,7 @@ add_executable(program
     src/ui/screens/editor_screen.cpp
     src/ui/screens/editor_elements/file_menu_bar_ui.cpp
     src/ui/screens/editor_elements/properties_ui.cpp
+    src/ui/screens/editor_elements/camera_settings_ui.cpp
     src/ui/screens/editor_elements/properties_ui_elements/atmosphere_ui.cpp
     src/ui/screens/editor_elements/properties_ui_elements/sun_ui.cpp
     src/ui/screens/editor_elements/properties_ui_elements/clouds_ui.cpp
@@ -40,10 +45,13 @@ add_executable(program
 target_include_directories(program PRIVATE
     src/core/camera
     src/core/state
-    src/core/properties
     src/core/loaders/shader_loader
     src/core/loaders/texture_loader
     src/core/texture
+
+    # Config
+    src/core/config
+    src/core/config_applier
 
     # Skybox exporter
     src/core/skybox_exporter

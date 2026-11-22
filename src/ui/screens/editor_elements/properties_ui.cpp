@@ -2,15 +2,15 @@
 
 EditorElements::PropertiesUi::PropertiesUi(
     State *state,
-    ::Properties *properties
-) : state(state), properties(properties)
+    Config *config
+) : state(state), config(config)
 {
 
 }
 
 void EditorElements::PropertiesUi::build()
 {
-    ImGui::Begin("Properties");
+    ImGui::Begin("SkyConfig");
 
     atmosphereUi.build();
     sunUi.build();

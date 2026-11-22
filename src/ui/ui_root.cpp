@@ -3,9 +3,12 @@
 UiRoot::UiRoot(
     State &state,
     GLFWwindow *window,
-    Properties &properties,
+    Config &config,
     SkyboxExporter &skyboxExporter
-) : state(&state), properties(&properties), skyboxExporter(&skyboxExporter)
+) :
+    state(&state),
+    config(&config),
+    skyboxExporter(&skyboxExporter)
 {
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();

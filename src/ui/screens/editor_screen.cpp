@@ -2,8 +2,8 @@
 
 Screen::EditorScreen::EditorScreen(
     State *state,
-    ::Properties *properties
-) : state(state), properties(properties)
+    Config *config
+) : state(state), config(config)
 {
 
 }
@@ -12,4 +12,5 @@ void Screen::EditorScreen::build()
 {
     fileMenuBarUi.build();
     propertiesUi.build();
+    cameraSettingsUi.build();
 }

@@ -3,7 +3,7 @@
 #include <filesystem>
 #include <string>
 
-#include "properties.hpp"
+#include "config_applier.hpp"
 
 class SkyboxExporter
 {
@@ -14,7 +14,7 @@ public:
     SkyboxExporter(
         unsigned int &shaderProgram,
         unsigned int &skyVAO,
-        Properties &properties
+        ConfigApplier &configApplier
     );
 
     void setExportPath(std::filesystem::path &path);
@@ -30,7 +30,7 @@ public:
 private:
     unsigned int &shaderProgram;
     unsigned int &skyVAO;
-    Properties *properties;
+    ConfigApplier *configApplier;
 
     std::filesystem::path exportPath =
         std::filesystem::current_path();

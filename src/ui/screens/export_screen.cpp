@@ -2,12 +2,12 @@
 
 Screen::ExportScreen::ExportScreen(
     State *state,
-    Properties *properties,
+    Config *config,
     SkyboxExporter *skyboxExporter,
     FileDialog &fileDialog
 ) :
     state(state),
-    properties(properties),
+    config(config),
     skyboxExporter(skyboxExporter),
     fileDialog(&fileDialog)
 {}

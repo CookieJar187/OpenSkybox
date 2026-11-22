@@ -1,5 +1,4 @@
 #include "skybox_exporter.hpp"
-#include "properties.hpp"
 
 #include <glad/glad.h>
 
@@ -14,11 +13,11 @@
 SkyboxExporter::SkyboxExporter(
     unsigned int &shaderProgram,
     unsigned int &skyVAO,
-    Properties &properties
+    ConfigApplier &configApplier
 ) :
-shaderProgram(shaderProgram),
-skyVAO(skyVAO),
-properties(&properties)
+    shaderProgram(shaderProgram),
+    skyVAO(skyVAO),
+    configApplier(&configApplier)
 {}
 
 // Setters
@@ -157,7 +156,8 @@ void SkyboxExporter::exportPng() {
         glPixelStorei(GL_PACK_ALIGNMENT, 1);
 
         glUseProgram(shaderProgram);
-        properties->apply(shaderProgram);
+        //properties->apply(shaderProgram);
+        configApplier->applyIfDirty();
 
         glUniform2f(
             glGetUniformLocation(shaderProgram, "uResolution"),

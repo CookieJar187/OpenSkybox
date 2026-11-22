@@ -7,7 +7,7 @@
 #include <imgui_impl_opengl3.h>
 
 #include "state.hpp"
-#include "properties.hpp"
+#include "config.hpp"
 
 namespace EditorElements
 {
@@ -22,80 +22,91 @@ namespace EditorElements
         void build();
     };
 
-    // Properties Elements
+    // SkyConfig Elements
     namespace PropertiesUiElement
     {
-        // Properties > Atmosphere
+        // SkyConfig > Atmosphere
         class AtmosphereUi
         {
         private:
             State *state;
-            ::Properties *properties;
+            Config *config;
 
         public:
             AtmosphereUi(
                 State *state,
-                ::Properties *properties
+                Config *config
             );
             void build();
         };
 
-        // Properties > Sun
+        // SkyConfig > Sun
         class SunUi
         {
         private:
             State *state;
-            ::Properties *properties;
+            Config *config;
 
         public:
             SunUi(
                 State *state,
-                ::Properties *properties
+                Config *config
             );
             void build();
         };
 
-        // Properties > Clouds
+        // SkyConfig > Clouds
         class CloudsUi
         {
         private:
             State *state;
-            ::Properties *properties;
+            Config *config;
 
         public:
             CloudsUi(
                 State *state,
-                ::Properties *properties
+                Config *config
             );
             void build();
         };
     }
 
-    // Properties
+    // SkyConfig
     class PropertiesUi
     {
     private:
         State *state;
-        ::Properties *properties;
+        Config *config;
 
         PropertiesUiElement::AtmosphereUi atmosphereUi{
             state,
-            properties
+            config
         };
         PropertiesUiElement::SunUi sunUi{
             state,
-            properties
+            config
         };
         PropertiesUiElement::CloudsUi cloudsUi{
             state,
-            properties
+            config
         };
 
     public:
         PropertiesUi(
             State *state,
-            ::Properties *properties
+            Config *config
         );
+        void build();
+    };
+
+    // Camera settings
+    class CameraSettingsUi
+    {
+    private:
+        Config *config;
+
+    public:
+        CameraSettingsUi(Config *config);
         void build();
     };
 }
