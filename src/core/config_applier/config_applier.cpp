@@ -5,8 +5,13 @@
 
 ConfigApplier::ConfigApplier(
     Config &config,
-    unsigned int shaderProgram
-) : config(&config), shaderProgram(shaderProgram) {}
+    unsigned int shaderProgram,
+    Camera &camera
+) :
+    config(&config),
+    shaderProgram(shaderProgram),
+    camera(&camera)
+{}
 
 void ConfigApplier::applySky()
 {
@@ -127,6 +132,8 @@ void ConfigApplier::applyEditor()
         glGetUniformLocation(shaderProgram, "uCameraFov"),
         config->editor.fov
     );
+
+    camera->setSensitivity(config->editor.mouseSensitivity);
 
     // Unmark dirty
     config->editor.dirty = false;

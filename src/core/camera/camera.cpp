@@ -42,3 +42,6 @@ void Camera::apply(unsigned int shaderProgram)
         pitch
     );
 }
+
+void Camera::setSensitivity(const float value)
+{ sensitivity = value; }

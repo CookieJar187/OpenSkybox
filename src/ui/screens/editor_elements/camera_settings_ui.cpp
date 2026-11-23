@@ -27,9 +27,9 @@ void EditorElements::CameraSettingsUi::build()
         if (ImGui::DragFloat(
             "Mouse Sensitivity",
             &value,
-            0.01f,
-            0.0f,
-            1.0f
+            0.005f,
+            0.05f,
+            1.5f
         ))
             config->editEditor().mouseSensitivity = value;
     }

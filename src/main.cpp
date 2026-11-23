@@ -85,7 +85,8 @@ int main()
 
     ConfigApplier configApplier {
         config,
-        skyProgram
+        skyProgram,
+        camera
     };
 
     SkyboxExporter skyboxExporter {

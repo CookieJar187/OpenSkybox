@@ -16,10 +16,13 @@ private:
 
     bool wasRotating = false;
 
-    const float sensitivity = 0.15f;
+    float sensitivity = 0.15f;
 
 public:
     Camera(GLFWwindow* window) : window(window) {}
+
     void update();
     void apply(unsigned int shaderProgram);
+
+    void setSensitivity(const float value);
 };

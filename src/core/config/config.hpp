@@ -88,7 +88,7 @@ private:
 
         // camera
         float fov = 70.0f;
-        float mouseSensitivity = 1.0f;
+        float mouseSensitivity = 0.15f;
         
     } editor;
 

@@ -23,7 +23,7 @@ void EditorElements::PropertiesUiElement::AtmosphereUi::build()
                 
                 if (ImGui::Selectable(config->getSky().atmosphereTypes[n], is_selected))
                 {
-                    //config->editSky().currentAtmosphereType = n;
+                    config->editSky().currentAtmosphereType = n;
                 }
                 if (is_selected)
                 {
